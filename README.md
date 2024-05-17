@@ -1,5 +1,9 @@
 # Setup .NET Identity
 
+### Source
+
+[Add .NET Identity login and registration to a .NET 6 Web API](https://dombarter.co.uk/posts/add-dotnet-identity-to-web-api/)
+
 Add the following packages
 
 - Microsoft.AspNetCore.Identity.EntityFrameworkCore
@@ -411,9 +415,10 @@ Based on:
 
 ## JWT Storage
 
-We can't store JWTs in local storage when we're consuming the API via an SPA. 
+We can't store JWTs in local storage when we're consuming the API via an SPA.
 
 Add cookie name to app settings:
+
 ```json
 "Jwt": {
     "Key": "ThisIsMySecretKey",
@@ -424,6 +429,7 @@ Add cookie name to app settings:
 ```
 
 Add this section to your `AddJwtBearer` options:
+
 ```csharp
 options.Events = new JwtBearerEvents
     {
@@ -436,6 +442,7 @@ options.Events = new JwtBearerEvents
 ```
 
 Change the login action to return a cookie with the token (must be HttpOnly), and only return account info in the body (not the token):
+
 ```csharp
 Response.Cookies.Append(_config["Jwt:CookieName"], token, new CookieOptions
 {
@@ -485,7 +492,7 @@ builder.Services.AddSwaggerGen();
 
 Now when you test in swagger, and login, you will see a cookie is automtically put into the browser - which will be used on subsequent requests
 
-As HttpOnly cookies cannot be accessed by javascript (hence why we use them!), we need to trigger a logout by calling a new endpoint. This will simply return the cookie with no token in it, and an instant expiry so the browser loses that cookie. 
+As HttpOnly cookies cannot be accessed by javascript (hence why we use them!), we need to trigger a logout by calling a new endpoint. This will simply return the cookie with no token in it, and an instant expiry so the browser loses that cookie.
 
 ```csharp
 [HttpPost]
@@ -506,11 +513,10 @@ public IActionResult Logout()
 }
 ```
 
-
-
-Cookies work when using a system such as swagger, but when using them in Vue.js we need a bit more configuration. 
+Cookies work when using a system such as swagger, but when using them in Vue.js we need a bit more configuration.
 
 First of all we need to define a default cors policy with a named origin:
+
 ```csharp
 // Add cors
 builder.Services.AddCors(options => options.AddDefaultPolicy(
