@@ -1,3 +1,33 @@
+# Quick Start
+
+## 1. Start SQL Server with Docker
+
+```
+docker compose up -d
+```
+
+## 2. Apply EF Core Migrations
+
+```
+dotnet ef database update --project Solar.Data/Solar.Data.csproj --startup-project Solar.API/Solar.API.csproj
+```
+
+## 3. Run the .NET API
+
+```
+dotnet run --project Solar.API/Solar.API.csproj
+```
+
+## 4. Restore & Run the Vue Project
+
+```
+cd Solar.Vue
+npm install
+npm run serve
+```
+
+---
+
 # Setup .NET Identity
 
 ### Source
@@ -490,7 +520,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 ```
 
-Now when you test in swagger, and login, you will see a cookie is automtically put into the browser - which will be used on subsequent requests
+Now when you test in swagger, and login, you will see a cookie is automatically put into the browser - which will be used on subsequent requests
 
 As HttpOnly cookies cannot be accessed by javascript (hence why we use them!), we need to trigger a logout by calling a new endpoint. This will simply return the cookie with no token in it, and an instant expiry so the browser loses that cookie.
 
